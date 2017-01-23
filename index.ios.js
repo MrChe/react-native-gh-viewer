@@ -10,45 +10,25 @@ import {
   StyleSheet,
   Text,
   View,
-  Navigator
+  NavigatorIOS
 } from 'react-native';
 
 import Main from './App/Components/Main';
-import Dashboard from './App/Components/Dashboard';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#111'
+    backgroundColor: '#111'
   },
 });
 
 export default class githubNotetaker extends Component {
   render() {
     return (
-      <Navigator
+      <NavigatorIOS
         style={styles.container}
-        renderScene={(route, navigator) => {
-          switch (route.name) {
-            case 'Dashboard':
-              return (
-                <Dashboard
-                  navigator={navigator}
-                  {...route}
-                />
-              )
-              break;
-            default:
-            return (
-              <Main
-                navigator={navigator}
-              />
-            )
-              break;
-          }
-        }}
         initialRoute={{
-          name: 'Main',
+          component: Main,
           title: 'GithubNotetaker',
         }}
       />

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import api from '../Utils/api';
+import Dashboard from './Dashboard';
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -28,19 +29,19 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     height: 50,
-      padding: 4,
-      marginRight: 5,
-      fontSize: 23,
-      borderWidth: 1,
-      borderColor: 'white',
-      borderRadius: 8,
-      color: 'white'
+    padding: 4,
+    marginRight: 5,
+    fontSize: 23,
+    borderWidth: 1,
+    borderColor: 'white',
+    borderRadius: 8,
+    color: 'white'
   },
   buttonText: {
-        fontSize: 18,
-        color: '#111',
-        alignSelf: 'center'
-    },
+      fontSize: 18,
+      color: '#111',
+      alignSelf: 'center'
+  },
   button: {
       height: 45,
       flexDirection: 'row',
@@ -75,19 +76,20 @@ export default class Main extends Component {
     this.setState({
       isLoading: true
     });
+    // console.log('******state*******', this.state.username);
     api.getBio(this.state.username).then((res) => {
-      console.log(res.message);
       if( res.message === 'Not Found' ) {
         this.setState({
           error: 'User not found',
           isLoading: false
         })
       } else {
-
         this.props.navigator.push({
           title: res.name || "Select an Option",
-          name: 'Dashboard',
-          userInfo: res
+          component: Dashboard,
+          passProps: {
+            userInfo: res
+          }
         });
         this.setState({
           isLoading: false,

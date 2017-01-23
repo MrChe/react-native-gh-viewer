@@ -7,6 +7,10 @@ import {
   Image,
 } from 'react-native';
 
+import Profile from './Profile';
+import Repositories from './Repositories';
+import Notes from './Notes';
+
 import api from '../Utils/api';
 
 const styles = StyleSheet.create({
@@ -42,14 +46,43 @@ export default class Dashboard extends Component {
    return obj;
  }
  goToProfile = () => {
-   console.log('Going to Profile Page');
+   this.props.navigator.push({
+     component: Profile,
+     title: 'Profile Page',
+     passProps: {userInfo: this.props.userInfo}
+   })
  }
+
  goToRepos = () => {
-   console.log('Going to Repos');
+   api.getRepos(this.props.userInfo.login)
+   .then((res) => {
+     this.props.navigator.push({
+       component: Repositories,
+       title: 'Repositories',
+       passProps: {
+         userInfo: this.props.userInfo,
+         repos: res
+       }
+     })
+   })
  }
+
  goToNotes = () => {
- console.log('Going to Notes');
+   api.getNotes(this.props.userInfo.login)
+    .then((jsonRes) => {
+      jsonRes = jsonRes || {};
+      this.props.navigator.push({
+        component: Notes,
+        title: 'Notes',
+        passProps: {
+          notes: jsonRes,
+          userInfo: this.props.userInfo
+        }
+      });
+      console.log(jsonRes);
+    });
  }
+
   render() {
     return (
       <View style={styles.container}>
